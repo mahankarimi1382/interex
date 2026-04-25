@@ -1,8 +1,8 @@
 // ignore_for_file: constant_identifier_names
 
 class Environment {
-  static const appName = "OvoPay";
-  static const appVersion = "2.0.0";
+  static const appName = "interex";
+  static const appVersion = "1.0.0";
 
   static String defaultLangCode = "en";
   static String defaultLanguageName = "English";
@@ -25,9 +25,9 @@ class Environment {
   // API END POINT URL
   static const MAIN_API_URL = DEV_MODE ? TEST_API_URL : LIVE_API_URL; // Don't touch here
 
-  static const LIVE_API_URL = 'https://preview.ovosolution.com/ovopay/demo'; //Live end Point URL
+  static const LIVE_API_URL = 'https://interex.ir'; //Live end Point URL
 
-  static const TEST_API_URL = 'https://preview.ovosolution.com/ovopay/demo'; //Local or demo or test URL
+  static const TEST_API_URL = 'https://interex.ir/demo'; //Local or demo or test URL
 
   // API END POINT URL END
 }
