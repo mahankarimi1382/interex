@@ -68,7 +68,7 @@ class UrlContainer {
   static const String supportReplyEndPoint = 'ticket/reply';
   static const String supportCloseEndPoint = 'ticket/close';
   static const String supportDownloadEndPoint = 'ticket/download';
-  static const String countryFlagImageLink = 'https://flagpedia.net/data/flags/h24/{countryCode}.webp';
+static const String countryFlagImageLink = 'assets/images/flags/{countryCode}.png';
   static const String faqEndPoint = 'faq';
 
   //Qr Code

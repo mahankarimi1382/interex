@@ -65,7 +65,7 @@ flutter:
     - assets/images/logo/
     - assets/animation/
     - assets/fonts/
-
+    - assets/images/flags/
   fonts:
     - family: AlbertSans
       fonts:

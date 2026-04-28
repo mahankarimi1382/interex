@@ -38,7 +38,31 @@ class MyNetworkImageWidget extends StatelessWidget {
       return _buildErrorWidget();
     }
 
-    return isSvg ? _buildSvgImage() : _buildCachedImage();
+    // 1. اگر مسیر از assets بود → Image.asset
+    if (imageUrl.startsWith('assets/')) {
+      final image = Image.asset(
+        imageUrl,
+        height: height,
+        width: width,
+        fit: boxFit,
+        color: color,
+      );
+
+      return radius > 0
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(radius),
+              child: image,
+            )
+          : image;
+    }
+
+    // 2. اگر svg بود → SvgPicture.network
+    if (isSvg) {
+      return _buildSvgImage();
+    }
+
+    // 3. اگر اینترنتی بود → CachedNetworkImage
+    return _buildCachedImage();
   }
 
   Widget _buildSvgImage() {
