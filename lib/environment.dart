@@ -25,9 +25,9 @@ class Environment {
   // API END POINT URL
   static const MAIN_API_URL = DEV_MODE ? TEST_API_URL : LIVE_API_URL; // Don't touch here
 
-  static const LIVE_API_URL = 'http://pooyavac.com'; //Live end Point URL
+  static const LIVE_API_URL = 'http://interex.ir'; //Live end Point URL
 
-  static const TEST_API_URL = 'http://pooyavac.com/demo'; //Local or demo or test URL
+  static const TEST_API_URL = 'http://interex.ir/demo'; //Local or demo or test URL
 
   // API END POINT URL END
 }
