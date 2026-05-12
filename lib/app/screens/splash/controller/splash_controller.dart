@@ -33,14 +33,38 @@ class SplashController extends GetxController {
     );
     update();
     if (isLoggedIn) {
-      PushNotificationService().sendUserToken();
+      try {
+        PushNotificationService().sendUserToken();
+      } catch (e) {
+        printE(e.toString());
+      }
     }
 
-    await loadLanguage();
-    await storeLangDataInLocalStorage();
-    await loadCountryDataAndSaveToLocalStorage();
-    await loadModuleDataAndSaveToLocalStorage();
-    await loadAndSaveGeneralSettingsData(isRemember, isOnBoard, accessToken);
+    try {
+      await loadLanguage();
+    } catch (e) {
+      printE(e.toString());
+    }
+    try {
+      await storeLangDataInLocalStorage();
+    } catch (e) {
+      printE(e.toString());
+    }
+    try {
+      await loadCountryDataAndSaveToLocalStorage();
+    } catch (e) {
+      printE(e.toString());
+    }
+    try {
+      await loadModuleDataAndSaveToLocalStorage();
+    } catch (e) {
+      printE(e.toString());
+    }
+    try {
+      await loadAndSaveGeneralSettingsData(isRemember, isOnBoard, accessToken);
+    } catch (e) {
+      printE(e.toString());
+    }
   }
 
   Future loadAndSaveGeneralSettingsData(
@@ -48,40 +72,44 @@ class SplashController extends GetxController {
     bool isOnBoard,
     String accessToken,
   ) async {
-    ResponseModel response = await repo.getGeneralSetting();
+    try {
+      ResponseModel response = await repo.getGeneralSetting();
 
-    if (response.statusCode == 200) {
-      GeneralSettingResponseModel model = GeneralSettingResponseModel.fromJson(
-        response.responseJson,
-      );
-      if (model.status?.toLowerCase() == AppStatus.SUCCESS) {
-        await SharedPreferenceService.setGeneralSettingData(model);
-      } else {
-        List<String> message = [MyStrings.somethingWentWrong];
-        CustomSnackBar.error(errorList: model.message ?? message);
-      }
-    }
-
-    isLoading = false;
-    update();
-    if (isMaintenance == false) {
-      // Navigate based on onboarding and remember status
-      Future.delayed(const Duration(seconds: 1), () {
-        if (isOnBoard) {
-          Get.offAllNamed(RouteHelper.onboardScreen);
+      if (response.statusCode == 200) {
+        GeneralSettingResponseModel model = GeneralSettingResponseModel.fromJson(
+          response.responseJson,
+        );
+        if (model.status?.toLowerCase() == AppStatus.SUCCESS) {
+          await SharedPreferenceService.setGeneralSettingData(model);
         } else {
-          if (Environment.DEV_MODE == true) {
-            //DEV LOGIC
-            if (SharedPreferenceService.getIsLoggedIn()) {
-              Get.offAllNamed(RouteHelper.dashboardScreen);
+          List<String> message = [MyStrings.somethingWentWrong];
+          CustomSnackBar.error(errorList: model.message ?? message);
+        }
+      }
+    } catch (e) {
+      printE(e.toString());
+    } finally {
+      isLoading = false;
+      update();
+      if (isMaintenance == false) {
+        // Navigate based on onboarding and remember status
+        Future.delayed(const Duration(seconds: 1), () {
+          if (isOnBoard) {
+            Get.offAllNamed(RouteHelper.onboardScreen);
+          } else {
+            if (Environment.DEV_MODE == true) {
+              //DEV LOGIC
+              if (SharedPreferenceService.getIsLoggedIn()) {
+                Get.offAllNamed(RouteHelper.dashboardScreen);
+              } else {
+                Get.offAllNamed(RouteHelper.loginScreen);
+              }
             } else {
               Get.offAllNamed(RouteHelper.loginScreen);
             }
-          } else {
-            Get.offAllNamed(RouteHelper.loginScreen);
           }
-        }
-      });
+        });
+      }
     }
   }
 

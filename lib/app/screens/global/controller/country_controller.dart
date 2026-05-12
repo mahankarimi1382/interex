@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:ovopay/core/data/models/country_model/country_model.dart';
 import 'package:ovopay/core/data/services/service_exporter.dart';
@@ -17,9 +20,20 @@ class CountryController {
   TextEditingController searchController = TextEditingController();
 
   // Initialize with an empty country list or populate it here.
-  void initialize() {
+  Future<void> initialize() async {
     try {
       CountryModel countryModel = SharedPreferenceService.getCountryJsonDataData();
+
+      // Fallback to local asset if no countries are found in SharedPreferences
+      if (countryModel.data?.countries == null || countryModel.data!.countries!.isEmpty) {
+        try {
+          String jsonString = await rootBundle.loadString('assets/country_list.json');
+          countryModel = CountryModel.fromJson(jsonDecode(jsonString));
+        } catch (e) {
+          printE("Error loading country_list.json: $e");
+        }
+      }
+
       selectedCountry = countryModel.data?.selectedCountryCode ?? Environment.defaultCountryCode;
       selectedCountryData = countryModel.data?.countries?.firstWhereOrNull(
         (country) => country.code?.toLowerCase() == selectedCountry.toLowerCase(),

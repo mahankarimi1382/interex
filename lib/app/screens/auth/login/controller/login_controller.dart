@@ -212,10 +212,10 @@ class LoginController extends BioMetricController {
   }
 
   CountryController countryDataController = CountryController();
-  void initializeData() {
+  Future<void> initializeData() async {
     mobileController.text = SharedPreferenceService.getUserPhoneNumber();
     //Country data
-    countryDataController.initialize();
+    await countryDataController.initialize();
     if (countryDataController.filteredCountries.isNotEmpty) {
       countryData = countryDataController.selectedCountryData ?? countryDataController.filteredCountries.first;
       countryController.text = countryData?.name ?? "";
