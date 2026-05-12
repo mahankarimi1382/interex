@@ -15,9 +15,11 @@ class CountryBottomSheet {
     BuildContext context, {
     CountryData? selectedCountry,
     required void Function(CountryData data) onSelectedData,
-  }) {
+  }) async {
     CountryController countryController = CountryController();
-    countryController.initialize(); // Load country data
+    await countryController.initialize(); // Load country data
+
+    if (!context.mounted) return;
 
     CustomBottomSheetPlus(
       isNeedAnimatedPadding: false,

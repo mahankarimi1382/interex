@@ -1,0 +1,26 @@
+{
+  "remark": "country_list",
+  "status": "success",
+  "message": ["Success"],
+  "data": {
+    "countries": [
+      {
+        "id": 1,
+        "name": "Iran",
+        "code": "IR",
+        "dial_code": "98",
+        "mobile_number_digit": "10",
+        "status": "1"
+      },
+      {
+        "id": 2,
+        "name": "United States",
+        "code": "US",
+        "dial_code": "1",
+        "mobile_number_digit": "10",
+        "status": "1"
+      }
+    ],
+    "selected_country_code": "IR"
+  }
+}

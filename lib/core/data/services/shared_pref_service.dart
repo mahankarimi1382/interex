@@ -155,7 +155,7 @@ class SharedPreferenceService {
 
   static Future setUserPinNumber(String value) async {
     await _secureStorage.write(
-      key: userPhoneNumberKey,
+      key: userPinCodeKey,
       value: value,
       aOptions: _getAndroidOptions(),
       iOptions: _getIOsOptions(),

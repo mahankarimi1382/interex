@@ -13,7 +13,11 @@ import 'package:path_provider/path_provider.dart';
 import 'api_service.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  try {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  } catch (e) {
+    printE("Firebase _messageHandler error: $e");
+  }
 
   SharedPreferenceService.setBool(
     SharedPreferenceService.hasNewNotificationKey,
@@ -25,10 +29,15 @@ class PushNotificationService {
   PushNotificationService();
 
   Future<void> setupInteractedMessage() async {
-    FirebaseMessaging.onBackgroundMessage(_messageHandler);
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
+    try {
+      FirebaseMessaging.onBackgroundMessage(_messageHandler);
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    } catch (e) {
+      printE("Firebase initialization error: $e");
+      return;
+    }
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     await _requestPermissions();
@@ -179,37 +188,46 @@ class PushNotificationService {
   }
 
   Future<bool> sendUserToken() async {
-    String deviceToken;
-    if (SharedPreferenceService.containsKey(
-      SharedPreferenceService.fcmDeviceKey,
-    )) {
-      deviceToken = SharedPreferenceService.getString(
+    try {
+      String deviceToken;
+      if (SharedPreferenceService.containsKey(
         SharedPreferenceService.fcmDeviceKey,
-      );
-    } else {
-      deviceToken = '';
-    }
+      )) {
+        deviceToken = SharedPreferenceService.getString(
+          SharedPreferenceService.fcmDeviceKey,
+        );
+      } else {
+        deviceToken = '';
+      }
 
-    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-    bool success = false;
-    if (deviceToken.isEmpty) {
-      firebaseMessaging.getToken().then((fcmDeviceToken) async {
-        success = await sendUpdatedToken(fcmDeviceToken ?? '');
-      });
-    } else {
-      firebaseMessaging.onTokenRefresh.listen((fcmDeviceToken) async {
-        if (deviceToken == fcmDeviceToken) {
-          success = true;
-        } else {
-          SharedPreferenceService.setString(
-            SharedPreferenceService.fcmDeviceKey,
-            fcmDeviceToken,
-          );
-          success = await sendUpdatedToken(fcmDeviceToken);
-        }
-      });
+      FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+      bool success = false;
+      if (deviceToken.isEmpty) {
+        firebaseMessaging.getToken().then((fcmDeviceToken) async {
+          success = await sendUpdatedToken(fcmDeviceToken ?? '');
+        }).catchError((e) {
+          printE("Error getting FCM token: $e");
+        });
+      } else {
+        firebaseMessaging.onTokenRefresh.listen((fcmDeviceToken) async {
+          if (deviceToken == fcmDeviceToken) {
+            success = true;
+          } else {
+            SharedPreferenceService.setString(
+              SharedPreferenceService.fcmDeviceKey,
+              fcmDeviceToken,
+            );
+            success = await sendUpdatedToken(fcmDeviceToken);
+          }
+        }, onError: (e) {
+          printE("Error on FCM token refresh: $e");
+        });
+      }
+      return success;
+    } catch (e) {
+      printE("sendUserToken error: $e");
+      return false;
     }
-    return success;
   }
 
   Future<bool> sendUpdatedToken(String deviceToken) async {
