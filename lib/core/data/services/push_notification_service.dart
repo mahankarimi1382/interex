@@ -1,18 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
-// import 'package:dio/dio.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ovopay/core/data/models/global/response_model/response_model.dart';
 import 'package:ovopay/core/data/services/shared_pref_service.dart';
 import 'package:ovopay/core/utils/util_exporter.dart';
-// import 'package:ovopay/firebase_options.dart';
+import 'package:ovopay/firebase_options.dart';
 import 'package:path_provider/path_provider.dart';
 import 'api_service.dart';
 
-/*
 Future<void> _messageHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -21,13 +20,11 @@ Future<void> _messageHandler(RemoteMessage message) async {
     true,
   );
 }
-*/
 
 class PushNotificationService {
   PushNotificationService();
 
   Future<void> setupInteractedMessage() async {
-    /*
     FirebaseMessaging.onBackgroundMessage(_messageHandler);
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -51,12 +48,11 @@ class PushNotificationService {
     FirebaseMessaging.onMessage.listen((RemoteMessage event) {});
 
     messaging.getToken().then((value) {});
-    */
     await enableIOSNotifications();
     await registerNotificationListeners();
   }
 
-  registerNotificationListeners() async {
+  Future<void> registerNotificationListeners() async {
     AndroidNotificationChannel channel = androidNotificationChannel();
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()?.createNotificationChannel(channel);
@@ -95,7 +91,6 @@ class PushNotificationService {
       },
     );
 
-    /*
     FirebaseMessaging.onMessage.listen((RemoteMessage? message) async {
       RemoteNotification? notification = message!.notification;
       AndroidNotification? android = message.notification?.android;
@@ -142,20 +137,17 @@ class PushNotificationService {
         );
       }
     });
-    */
   }
 
-  enableIOSNotifications() async {
-    /*
+  Future<void> enableIOSNotifications() async {
     await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
       alert: true, // Required to display a heads up notification
       badge: true,
       sound: true,
     );
-    */
   }
 
-  androidNotificationChannel() => const AndroidNotificationChannel(
+  AndroidNotificationChannel androidNotificationChannel() => const AndroidNotificationChannel(
         'high_importance_channel', // id
         'High Importance Notifications', // title
         description: 'This channel is used for important notifications.',
@@ -187,7 +179,6 @@ class PushNotificationService {
   }
 
   Future<bool> sendUserToken() async {
-    /*
     String deviceToken;
     if (SharedPreferenceService.containsKey(
       SharedPreferenceService.fcmDeviceKey,
@@ -219,8 +210,6 @@ class PushNotificationService {
       });
     }
     return success;
-    */
-    return true;
   }
 
   Future<bool> sendUpdatedToken(String deviceToken) async {

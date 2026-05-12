@@ -68,7 +68,7 @@ class UrlContainer {
   static const String supportReplyEndPoint = 'ticket/reply';
   static const String supportCloseEndPoint = 'ticket/close';
   static const String supportDownloadEndPoint = 'ticket/download';
-  static const String countryFlagImageLink = 'assets/images/flags/{countryCode}.png';
+static const String countryFlagImageLink = 'assets/images/flags/{countryCode}.png';
   static const String faqEndPoint = 'faq';
 
   //Qr Code
@@ -146,6 +146,12 @@ class UrlContainer {
   static const String rechargeStoreEndPoint = 'mobile-recharge/store';
   static const String rechargeHistoryEndPoint = 'mobile-recharge/history';
 
+  //gift card
+  static const String allGiftCardEndPoint = 'gift-card/create';
+  static const String giftPurchaseEndPoint = 'gift-card/purchase';
+  static const String giftCardHistoryEndPoint = 'gift-card/history';
+  static const String giftCardPdfDownloadEndPoint = 'gift-card/pdf';
+
   ///Recharge End
   ///Airtime Recharge
   static const String airtimeEndPoint = 'airtime/create';
@@ -182,4 +188,9 @@ class UrlContainer {
   static const String agentImagePath = '$domainUrl/assets/images/agent/profile/';
   static const String merchantImagePath = '$domainUrl/assets/images/merchant/profile/';
   static const String maintenanceImagePath = '$domainUrl/assets/images/maintenance/';
+
+  //investment
+  static const String investmentPlan = 'investment/plan';
+  static const String makeInvestmentStoreEndPoint = 'investment/store';
+  static const String investmentHistoryEndPoint = 'investment/history';
 }

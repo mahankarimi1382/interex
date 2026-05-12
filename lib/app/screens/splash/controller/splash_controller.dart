@@ -23,7 +23,7 @@ class SplashController extends GetxController {
   LocalizationController localizationController = LocalizationController();
   bool isLoading = true;
   bool isMaintenance = false;
-  gotoNextPage() async {
+  Future<void> gotoNextPage() async {
     bool isRemember = SharedPreferenceService.getRememberMe();
     bool isLoggedIn = SharedPreferenceService.getIsLoggedIn();
     String accessToken = SharedPreferenceService.getAccessToken();
@@ -32,9 +32,9 @@ class SplashController extends GetxController {
       defaultValue: true,
     );
     update();
-    // if (isLoggedIn) {
-    //   PushNotificationService().sendUserToken();
-    // }
+    if (isLoggedIn) {
+      PushNotificationService().sendUserToken();
+    }
 
     await loadLanguage();
     await storeLangDataInLocalStorage();

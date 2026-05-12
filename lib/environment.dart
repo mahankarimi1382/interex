@@ -1,14 +1,14 @@
 // ignore_for_file: constant_identifier_names
 
 class Environment {
-  static const appName = "irgeopay";
-  static const appVersion = "1.0.1";
+  static const appName = "interex";
+  static const appVersion = "1.0.0";
 
   static String defaultLangCode = "en";
   static String defaultLanguageName = "English";
 
-  static String defaultPhoneDialCode = "98"; //don't put + here
-  static String defaultCountryCode = "IR";
+  static String defaultPhoneDialCode = "1"; //don't put + here
+  static String defaultCountryCode = "US";
   static int maxMobileNumberDigit = 10; // Specify the required mobile number digits without country code
   static int maxPinNumberDigit = 5; // Specify the required max pin number digits
   static int maxAllowPrecision = 10; // Specify the required allow precision for amount of digits
@@ -27,7 +27,7 @@ class Environment {
 
   static const LIVE_API_URL = 'https://interex.ir'; //Live end Point URL
 
-  static const TEST_API_URL = 'https://interex.ir'; //Local or demo or test URL
+  static const TEST_API_URL = 'https://interex.ir/demo'; //Local or demo or test URL
 
   // API END POINT URL END
 }

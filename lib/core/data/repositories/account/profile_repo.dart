@@ -69,7 +69,7 @@ class ProfileRepo {
   }
 
   Future<void> updateDeviceToken() async {
-    // await PushNotificationService().sendUserToken();
+    await PushNotificationService().sendUserToken();
   }
 
   Future<dynamic> getCountryList() async {
