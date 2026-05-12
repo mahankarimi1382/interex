@@ -14,9 +14,11 @@ import 'package:ovopay/app/screens/auth/register/views/register_screen.dart';
 import 'package:ovopay/app/screens/bank_transfer_screen/views/bank_transfer_add_new_bank_screen.dart';
 import 'package:ovopay/app/screens/bank_transfer_screen/views/bank_transfer_history_screen.dart';
 import 'package:ovopay/app/screens/bank_transfer_screen/views/bank_transfer_screen.dart';
-import 'package:ovopay/app/screens/bill_pay_screen/views/bill_pay_add_new_account_screen.dart';
 import 'package:ovopay/app/screens/bill_pay_screen/views/bill_pay_history_screen.dart';
 import 'package:ovopay/app/screens/bill_pay_screen/views/bill_pay_screen.dart';
+import 'package:ovopay/app/screens/gift_screen/views/gift_history_screen.dart';
+import 'package:ovopay/app/screens/investment/investment_screen.dart';
+import 'package:ovopay/app/screens/investment/widgets/investment_history_screen.dart';
 import 'package:ovopay/app/screens/my_qr_code_screen/views/qr_code_login_screen.dart';
 import 'package:ovopay/app/screens/no_internet/no_internet_screen.dart';
 import 'package:ovopay/app/screens/page_content_screen/views/maintenance_content_screen.dart';
@@ -35,8 +37,6 @@ import 'package:ovopay/app/screens/faq/views/faq_screen.dart';
 import 'package:ovopay/app/screens/language/language_screen.dart';
 import 'package:ovopay/app/screens/micro_finance_screen/views/micro_finance_history_screen.dart';
 import 'package:ovopay/app/screens/micro_finance_screen/views/micro_finance_screen.dart';
-import 'package:ovopay/app/screens/mobile_recharge_screen/views/mobile_recharge_history_screen.dart';
-import 'package:ovopay/app/screens/mobile_recharge_screen/views/mobile_recharge_screen.dart';
 import 'package:ovopay/app/screens/my_qr_code_screen/views/my_qr_code_screen.dart';
 import 'package:ovopay/app/screens/my_qr_code_screen/views/scan_qr_code_screen.dart';
 import 'package:ovopay/app/screens/notification_screen/notification_screen.dart';
@@ -66,6 +66,8 @@ import 'package:ovopay/app/screens/two_factor/two_factor_verification_screen/two
 import 'package:ovopay/core/data/models/user/user_model.dart';
 import 'package:ovopay/core/data/services/service_exporter.dart';
 import 'package:ovopay/core/utils/url_container.dart';
+
+import '../../app/screens/gift_screen/views/gift_screen.dart';
 
 class RouteHelper {
   // Route names
@@ -119,13 +121,12 @@ class RouteHelper {
   static const String cashOutHistoryScreen = "/cash_out_history_screen";
   static const String paymentScreen = "/payment_screen";
   static const String paymentHistoryScreen = "/payment_history_screen";
-  static const String mobileRechargeScreen = "/mobile_recharge_screen";
-  static const String mobileRechargeHistoryScreen = "/mobile_recharge_history_screen";
+  static const String giftCardScreen = "/gift_card_screen";
+  static const String giftHistoryScreen = "/mobile_recharge_history_screen";
   static const String airTimeScreen = "/airtime_recharge_screen";
   static const String airTimeHistoryScreen = "/airtime_history_screen";
   static const String billPayScreen = "/bill_pay_screen";
   static const String billPayHistoryScreen = "/bill_pay_history_screen";
-  static const String billPayAddNewAccountScreen = "/bill_pay_add_new_account_screen";
   static const String bankTransferScreen = "/bank_transfer_screen";
   static const String bankTransferAddNewBankScreen = "/bank_transfer_add_new_bank_screen";
   static const String bankTransferHistoryScreen = "/bank_transfer_history_screen";
@@ -141,6 +142,8 @@ class RouteHelper {
   static const String virtualCardsScreen = "/cards_screen";
   static const String singleCardsScreen = "/single_cards_screen";
   static const String createVccCardScreen = "/create_vcc_card_screen";
+  static const String investmentScreen = "/investment_screen";
+  static const String investmentHistoryScreen = "/investment__history_screen";
 
   // Define your routes
   static List<GetPage> routes = [
@@ -406,15 +409,15 @@ class RouteHelper {
     ),
     //Mobile Recharge
     GetPage(
-      name: mobileRechargeScreen,
+      name: giftCardScreen,
       transitionDuration: const Duration(milliseconds: 400),
-      page: () => const MobileRechargeScreen(),
+      page: () => const GiftScreen(),
       transition: Transition.fadeIn,
     ),
     GetPage(
-      name: mobileRechargeHistoryScreen,
+      name: giftHistoryScreen,
       transitionDuration: const Duration(milliseconds: 400),
-      page: () => const MobileRechargeHistoryScreen(),
+      page: () => const GiftHistoryScreen(),
       transition: Transition.fadeIn,
     ),
     //Airtime Recharge
@@ -443,12 +446,7 @@ class RouteHelper {
       page: () => const BillPayHistoryScreen(),
       transition: Transition.fadeIn,
     ),
-    GetPage(
-      name: billPayAddNewAccountScreen,
-      transitionDuration: const Duration(milliseconds: 400),
-      page: () => const BillPayAddAccountScreen(),
-      transition: Transition.fadeIn,
-    ),
+
     //Bank transfer
     GetPage(
       name: bankTransferScreen,
@@ -553,6 +551,18 @@ class RouteHelper {
       page: () => CreateVcCardScreen(),
       transition: Transition.fadeIn,
     ),
+    GetPage(
+      name: investmentScreen,
+      transitionDuration: const Duration(milliseconds: 400),
+      page: () => InvestmentScreen(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: investmentHistoryScreen,
+      transitionDuration: const Duration(milliseconds: 400),
+      page: () => InvestmentHistoryScreen(),
+      transition: Transition.fadeIn,
+    ),
   ];
 
   static Future<void> checkUserStatusAndGoToNextStep(
@@ -615,7 +625,7 @@ class RouteHelper {
         SharedPreferenceService.accessTokenType,
         tokenType,
       );
-      // await PushNotificationService().sendUserToken();
+      await PushNotificationService().sendUserToken();
       SharedPreferenceService.setIsLoggedIn(true);
     }
 
@@ -649,8 +659,8 @@ class RouteHelper {
       Get.toNamed(RouteHelper.cashOutScreen);
     } else if (moduleName == "make_payment") {
       Get.toNamed(RouteHelper.paymentScreen);
-    } else if (moduleName == "mobile_recharge") {
-      Get.toNamed(RouteHelper.mobileRechargeScreen);
+    } else if (moduleName == "gift_card") {
+      Get.toNamed(RouteHelper.giftCardScreen);
     } else if (moduleName == "utility_bill") {
       Get.toNamed(RouteHelper.billPayScreen);
     } else if (moduleName == "bank_transfer") {
@@ -665,7 +675,7 @@ class RouteHelper {
       Get.toNamed(RouteHelper.addMoneyScreen);
     } else if (moduleName == "virtual_card") {
       Get.toNamed(RouteHelper.virtualCardsScreen);
-    } else if (moduleName == "air_time") {
+    } else if (moduleName == "mobile_recharge") {
       Get.toNamed(RouteHelper.airTimeScreen);
     }
   }
