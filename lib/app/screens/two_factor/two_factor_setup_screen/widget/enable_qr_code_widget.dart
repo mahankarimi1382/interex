@@ -123,16 +123,16 @@ class EnableQRCodeWidget extends StatelessWidget {
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
-                      final Uri url = Uri.parse(
-                        "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en",
-                      );
+                      // final Uri url = Uri.parse(
+                      //   "https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en",
+                      // );
 
-                      if (!await launchUrl(
-                        url,
-                        mode: LaunchMode.externalApplication,
-                      )) {
-                        throw Exception('Could not launch $url');
-                      }
+                      // if (!await launchUrl(
+                      //   url,
+                      //   mode: LaunchMode.externalApplication,
+                      // )) {
+                      //   throw Exception('Could not launch $url');
+                      // }
                     },
                   // style: boldExtraLarge.copyWith(color: MyColor.getRedColor()),
                 ),

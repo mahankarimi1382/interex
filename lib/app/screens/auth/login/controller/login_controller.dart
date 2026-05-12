@@ -56,6 +56,7 @@ class LoginController extends BioMetricController {
         mobileController.text.toString(),
         pinController.text.toString(),
       );
+
       // Check if the response status code is 200 (success)
       if (model.statusCode == 200) {
         // Parse the response into the LoginResponseModel
@@ -149,7 +150,7 @@ class LoginController extends BioMetricController {
               SharedPreferenceService.accessTokenType,
               tokenType,
             );
-            await PushNotificationService().sendUserToken();
+            // await PushNotificationService().sendUserToken();
           }
           bool needSmsVerification = user?.sv == '1' ? false : true;
           bool needProfileCompleteVerification = user?.profileComplete == '1' ? false : true;
@@ -212,7 +213,7 @@ class LoginController extends BioMetricController {
   }
 
   CountryController countryDataController = CountryController();
-  void initializeData() {
+  initializeData() {
     mobileController.text = SharedPreferenceService.getUserPhoneNumber();
     //Country data
     countryDataController.initialize();
@@ -226,7 +227,7 @@ class LoginController extends BioMetricController {
     update();
   }
 
-  void selectedCountryData(CountryData value) {
+  selectedCountryData(CountryData value) {
     countryData = value;
     countryController.text = value.name ?? "";
     SharedPreferenceService.setSelectedOperatingCountry(value);
