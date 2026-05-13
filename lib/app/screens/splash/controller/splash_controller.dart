@@ -14,6 +14,7 @@ import 'package:ovopay/core/utils/messages.dart';
 import 'package:ovopay/core/utils/my_strings.dart';
 import 'package:ovopay/environment.dart';
 
+import '../../../../core/utils/util_exporter.dart';
 import '../../../../core/data/services/service_exporter.dart';
 
 class SplashController extends GetxController {

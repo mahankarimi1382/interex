@@ -7,8 +7,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:ovopay/core/data/models/global/response_model/response_model.dart';
 import 'package:ovopay/core/data/services/shared_pref_service.dart';
-import 'package:ovopay/core/utils/util_exporter.dart';
 import 'package:ovopay/firebase_options.dart';
+
+import '../../utils/util_exporter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'api_service.dart';
 
