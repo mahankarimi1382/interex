@@ -17,7 +17,7 @@ Future<void> main() async {
   // init shared preference
   await SharedPreferenceService.init();
   // inti fcm services
-  await PushNotificationService().setupInteractedMessage();
+  PushNotificationService().setupInteractedMessage();
   //Api inits
   ApiService.init();
   //Dependency injection

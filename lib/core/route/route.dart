@@ -625,7 +625,7 @@ class RouteHelper {
         SharedPreferenceService.accessTokenType,
         tokenType,
       );
-      await PushNotificationService().sendUserToken();
+      PushNotificationService().sendUserToken();
       SharedPreferenceService.setIsLoggedIn(true);
     }
 

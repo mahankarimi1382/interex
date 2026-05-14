@@ -17,8 +17,8 @@ class ApiService {
   static final Dio _dio = Dio(
     BaseOptions(
       baseUrl: UrlContainer.baseUrl,
-      connectTimeout: const Duration(seconds: 30), // 5 seconds
-      receiveTimeout: const Duration(seconds: 30), // 3 seconds
+      connectTimeout: const Duration(seconds: 15),
+      receiveTimeout: const Duration(seconds: 15),
       headers: {'Content-Type': 'application/json'},
     ),
   );
@@ -325,6 +325,15 @@ class ApiService {
         isSuccess: false,
         message: 'No internet connection. Please check your network.',
         statusCode: 503, // Custom code for no internet
+        responseJson: '',
+      );
+    }
+
+    if (e.type == DioExceptionType.connectionTimeout || e.type == DioExceptionType.sendTimeout || e.type == DioExceptionType.receiveTimeout) {
+      return ResponseModel(
+        isSuccess: false,
+        message: 'Connection timed out. Please try again.',
+        statusCode: 408, // Request Timeout
         responseJson: '',
       );
     }

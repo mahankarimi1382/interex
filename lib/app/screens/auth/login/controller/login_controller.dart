@@ -140,39 +140,12 @@ class LoginController extends BioMetricController {
             SharedPreferenceService.userPhoneNumberKey,
             user?.mobile ?? '',
           );
-          if (accessToken.isNotEmpty) {
-            await SharedPreferenceService.setString(
-              SharedPreferenceService.accessTokenKey,
-              accessToken,
-            );
-            await SharedPreferenceService.setString(
-              SharedPreferenceService.accessTokenType,
-              tokenType,
-            );
-            await PushNotificationService().sendUserToken();
-          }
-          bool needSmsVerification = user?.sv == '1' ? false : true;
-          bool needProfileCompleteVerification = user?.profileComplete == '1' ? false : true;
-
-          // Handle the next steps based on user status
-
-          if (needSmsVerification) {
-            ResponseModel authReqModel = await loginRepo.sendAuthorizationRequest();
-
-            AuthorizationResponseModel authorizationResponseModel = AuthorizationResponseModel.fromJson(authReqModel.responseJson);
-            if (authorizationResponseModel.status.toString().toLowerCase() == AppStatus.SUCCESS.toLowerCase()) {
-              Get.toNamed(RouteHelper.registrationScreen, arguments: user);
-            } else {
-              CustomSnackBar.error(
-                errorList: authorizationResponseModel.message ?? [MyStrings.loginFailedTryAgain],
-              );
-            }
-          }
-          if (needProfileCompleteVerification) {
-            Get.toNamed(RouteHelper.registrationScreen, arguments: user);
-          }
-
-          // If the user chose to "remember me", save the state
+          await RouteHelper.checkUserStatusAndGoToNextStep(
+            user,
+            accessToken: accessToken,
+            tokenType: tokenType,
+            isRemember: true,
+          );
         } else {
           if (regModel.remark != "pin_required") {
             // Show an error if login failed
